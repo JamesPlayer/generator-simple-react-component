@@ -1,6 +1,7 @@
 const Generator = require('yeoman-generator');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
+const fs = require('fs');
 
 module.exports = class extends Generator {
 
@@ -33,13 +34,20 @@ module.exports = class extends Generator {
 
     this.registerTransformStream(rename(path => {
       path.basename = path.basename.replace(replacement, that.answers.name);
+      path.basename = path.basename.replace('MyComponentContainer', `${that.answers.name}Container`);
     }));
 
     this.registerTransformStream(replace(template, that.answers.name));
+    this.registerTransformStream(replace('MyComponent', that.answers.name));
 
     this.fs.copy(
-        this.templatePath(template + '/'),
-        this.destinationPath(this.answers.name)
-      );
+      this.templatePath(`${template}.jsx`),
+      this.destinationPath(`${that.answers.name}.jsx`)
+    );
+
+    this.fs.copy(
+      this.templatePath('MyComponentContainer.js'),
+      this.destinationPath(`${that.answers.name}Container.js`)
+    );
   }
 };

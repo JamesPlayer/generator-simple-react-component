@@ -18,17 +18,20 @@ describe('Functional component', () => {
     rimraf.sync(path.join(__dirname, 'tmp'));
   });
   it('create component with given name', () => {
-    assert.file(path.join(__dirname, `tmp/${componentName}/${componentName}.jsx`));
+    assert.file(path.join(__dirname, `tmp/${componentName}.jsx`));
   });
   it('function has given name', () => {
-    assert.fileContent(path.join(__dirname, `tmp/${componentName}/${componentName}.jsx`), `const ${componentName}`);
+    assert.fileContent(path.join(__dirname, `tmp/${componentName}.jsx`), `const ${componentName}`);
   });
-  it('index imports component', () => {
-    assert.fileContent(path.join(__dirname, `tmp/${componentName}/index.js`), `import ${componentName}`);
+  it('create container component with given name', () => {
+    assert.file(path.join(__dirname, `tmp/${componentName}Container.js`));
   });
-  it('index exports component', () => {
-    assert.fileContent(path.join(__dirname, `tmp/${componentName}/index.js`), `export default ${componentName}`);
-  })
+  it('container is importing correct file', () => {
+    assert.fileContent(path.join(__dirname, `tmp/${componentName}Container.js`), `import ${componentName} from './${componentName}';`);
+  });
+  it('container is wrapping correct file', () => {
+    assert.fileContent(path.join(__dirname, `tmp/${componentName}Container.js`), `export default connect(mapStateToProps, mapDispatchToProps)(${componentName});`);
+  });
 });
 
 describe('Class component', () => {
@@ -45,15 +48,18 @@ describe('Class component', () => {
     rimraf.sync(path.join(__dirname, 'tmp'));
   });
   it('create component with given name', () => {
-    assert.file(path.join(__dirname, `tmp/${componentName}/${componentName}.jsx`));
+    assert.file(path.join(__dirname, `tmp/${componentName}.jsx`));
   });
   it('function has given name', () => {
-    assert.fileContent(path.join(__dirname, `tmp/${componentName}/${componentName}.jsx`), `class ${componentName}`);
+    assert.fileContent(path.join(__dirname, `tmp/${componentName}.jsx`), `class ${componentName}`);
   });
-  it('index imports component', () => {
-    assert.fileContent(path.join(__dirname, `tmp/${componentName}/index.js`), `import ${componentName}`);
+  it('create container component with given name', () => {
+    assert.file(path.join(__dirname, `tmp/${componentName}Container.js`));
   });
-  it('index exports component', () => {
-    assert.fileContent(path.join(__dirname, `tmp/${componentName}/index.js`), `export default ${componentName}`);
-  })
+  it('container is importing correct file', () => {
+    assert.fileContent(path.join(__dirname, `tmp/${componentName}Container.js`), `import ${componentName} from './${componentName}';`);
+  });
+  it('container is wrapping correct file', () => {
+    assert.fileContent(path.join(__dirname, `tmp/${componentName}Container.js`), `export default connect(mapStateToProps, mapDispatchToProps)(${componentName});`);
+  });
 });
